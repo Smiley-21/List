@@ -10,8 +10,8 @@
   </head>
   <body>
     <div class="box" id="heading"><h1><%=ListTitle %></h1></div>
+  
     <div class="box">
-
        <% newListItems.forEach(function(item){%>
         <form action="/delete" method="post">
             <div class="item">
@@ -19,17 +19,15 @@
                 <p><%= item.name%></p>
                 </div>
 <!-- Here input type is hidden and required to enhance dynamic deletion -->
+
       <input type="hidden" name="listName" value="<%= ListTitle %>"></input>
     </form>
     <%})%>
-    
-      
-    
-  
+
 
    <form action="/" method="post" class="item">
      <input type="text" name="newItem"  placeholder="New Item" autocomplete="off">
-     <button type="submit" name="list" value="<%=ListTitle%>" >+</button>
+     <button type="submit" name="list" value="<%=ListTitle%>" ><h3>Add</h3></button>
    </form>
 </div>
   </body>

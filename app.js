@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _=require("lodash");
+const logger = require("morgan");
 
 const app = express();
 
@@ -9,9 +10,18 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-mongoose.connect("mongodb+srv://admin-Saurabh:Saurabh&21@cluster0.blvff.mongodb.net/todolistDB", {
-  useNewUrlParser: true,
+               
+  //  Used for MongoDB Database
+mongoose.connect("mongodb+srv://admin-Saurabh:Saurabh&21@cluster0.blvff.mongodb.net/todolistDB",{useNewUrlParser:true,})
+.then(()=>{
+  console.log("MongoDB connected Successfully");
+})
+.catch(err=>{
+  console.log("Error in connecting MongoDB"+err);
 });
+
+// mongoose.connect("mongodb://localhost:27017/app");   
+// Used for local Database
 const ItemsSchema = {
   name: String,
 };
@@ -34,6 +44,7 @@ const listSchema={
     items:[ItemsSchema]
 };
 const List=mongoose.model("List", listSchema);
+const dt=new Date();
 
 app.get("/", function (req, res) {
 
@@ -52,13 +63,14 @@ app.get("/", function (req, res) {
       }
       else
       { 
-        res.render("list", { ListTitle: "Today", newListItems: foundItems});
+        res.render("list", { ListTitle: dt, newListItems: foundItems});
         console.log(foundItems);
       }
 
      
   });
 });
+
 
 app.post("/", function(req, res)
 {
@@ -68,7 +80,7 @@ app.post("/", function(req, res)
       name:itemName
     });
 
-    if(listName ==="Today")
+    if(listName ===dt)
     {
       item.save();
       res.redirect("/");
@@ -97,7 +109,7 @@ app.post("/delete", function(req, res)
     const checkedItemId=req.body.checkonAList;
     const listName=req.body.listName;
     // console.log(req.body); //Use to console on checking a item in the list
-    if(listName==="Today")
+    if(listName===dt)
     {
 
       Item.findByIdAndRemove(checkedItemId, function(err)
@@ -125,6 +137,7 @@ app.post("/delete", function(req, res)
     }
   
 });
+
 app.get("/:customListName", function(req, res)
 {const customListName1=_.capitalize(req.params.customListName);
     List.findOne({name:customListName1}, function(err, foundList)
@@ -159,6 +172,7 @@ app.get("/:customListName", function(req, res)
    
     
 });
+app.use(logger("dev"));
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
