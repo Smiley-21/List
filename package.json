@@ -6,13 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "build":"npm install"
+    "build": "npm install"
   },
   "author": "Saurabh Patel",
   "license": "ISC",
-  "engines": {
-    "node": "v16.13.0"
-  },
+ 
   "dependencies": {
     "body-parser": "^1.19.1",
     "dev-logger": "^0.1.2",
@@ -21,6 +19,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.5.4",
     "morgan": "^1.10.0",
+    "node": "^19.8.1",
     "nodemon": "^2.0.20"
   }
 }
